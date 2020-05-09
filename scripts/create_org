@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Run this script to set up a scratch org for development
+
+echo "Creating scratch org..."
+sfdx force:org:create -s -f config/project-scratch-def.json -a 'lmaAppCockpit'
+
+echo "Installing LMA 1.20..."
+sfdx force:package:install --package 04t30000001DWL0 --wait 10 -u lmaAppCockpit
+
+echo "Pushing source code..."
+sfdx force:source:push
+
+echo "Assigning permission set to default user..."
+sfdx force:user:permset:assign -n AppCockpitAdmin
+
+echo "Opening org..."
+sfdx force:org:open
